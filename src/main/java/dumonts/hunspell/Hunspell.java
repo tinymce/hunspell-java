@@ -1,6 +1,6 @@
 package dumonts.hunspell;
 
-import hunspell.HunspellLibrary;
+import hunspell.bindings.HunspellLibrary;
 import org.bridj.Pointer;
 
 import java.io.Closeable;
