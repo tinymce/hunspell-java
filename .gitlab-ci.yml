@@ -1,0 +1,64 @@
+---
+variables:
+  GIT_SUBMODULE_STRATEGY: normal
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+
+cache:
+  paths:
+    - .m2/repository
+
+.validate:
+  stage: build
+  script: "mvn validate"
+
+.verify:
+  stage: test
+  script: "mvn verify"
+  except:
+    - master
+
+validate:jdk8-alpine:
+  extends: .validate
+  image: maven:3-jdk-8-alpine
+  before_script:
+    - "apk add libc6-compat libstdc++"
+    - "export LD_LIBRARY_PATH=/lib64/"
+
+validate:jdk8:
+  extends: .validate
+  image: maven:3-jdk-8
+  
+validate:jdk11-slim:
+  extends: .validate
+  image: maven:3-jdk-11-slim
+
+validate:jdk11:
+  extends: .validate
+  image: maven:3-jdk-11
+
+verify:jdk8-alpine:
+  extends: .verify
+  image: maven:3-jdk-8-alpine
+  before_script:
+    - "apk add libc6-compat libstdc++"
+    - "export LD_LIBRARY_PATH=/lib64/"
+
+verify:jdk8:
+  extends: .verify
+  image: maven:3-jdk-8
+  
+verify:jdk11-slim:
+  extends: .verify
+  image: maven:3-jdk-11-slim
+
+verify:jdk11:
+  extends: .verify
+  image: maven:3-jdk-11
+
+deploy:jdk8:
+  stage: deploy
+  script:
+    - 'mvn deploy'
+  only:
+    - master
+  image: maven:3-jdk-8
