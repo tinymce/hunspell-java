@@ -54,6 +54,7 @@ public class Hunspell implements Closeable {
         if (handle == null) {
             throw new RuntimeException("Attempt to use hunspell instance after closing");
         }
+        @SuppressWarnings("unchecked")
         Pointer<Byte> str = (Pointer<Byte>) Pointer.pointerToString(word, Pointer.StringType.C, charset);
         int result = HunspellLibrary.Hunspell_spell(handle, str);
         return result != 0;
@@ -63,18 +64,20 @@ public class Hunspell implements Closeable {
         if (handle == null) {
             throw new RuntimeException("Attempt to use hunspell instance after closing");
         }
+        @SuppressWarnings("unchecked")
         Pointer<Byte> str = (Pointer<Byte>) Pointer.pointerToString(word, Pointer.StringType.C, charset);
         HunspellLibrary.Hunspell_add(handle, str);
     }
 
     public List<String> suggest(String word) {
         // Create pointer to native string
+        @SuppressWarnings("unchecked")
         Pointer<Byte> str = (Pointer<Byte>) Pointer.pointerToString(word, Pointer.StringType.C, charset);
         // Create pointer to native string array
         Pointer<Pointer<Pointer<Byte>>> nativeSuggestionArray = Pointer.allocatePointerPointer(Byte.class);
         // Hunspell will allocate the array and fill it with suggestions
         int suggestionCount = HunspellLibrary.Hunspell_suggest(handle, nativeSuggestionArray, str);
-        if(suggestionCount == 0) {
+        if (suggestionCount == 0) {
             // Return early and don't try to free the array
             return new ArrayList<>();
         }
