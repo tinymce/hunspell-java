@@ -1,4 +1,4 @@
 -library hunspell
--package hunspell.bindings
+-package dumonts.hunspell.bindings
 -Isrc/main/cpp/hunspell/src/hunspell/
 src/main/cpp/hunspell/src/hunspell/hunspell.h

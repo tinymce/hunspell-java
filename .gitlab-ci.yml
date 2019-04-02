@@ -7,47 +7,37 @@ cache:
   paths:
     - .m2/repository
 
-build-images:
+build-image:
+  stage: build
   image: docker:stable
   variables:
     DOCKER_HOST: tcp://docker:2375/
     DOCKER_DRIVER: overlay2
   services:
     - docker:dind
-  stage: build
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker build -t registry.gitlab.com/dumonts/hunspell-java:build-linux_x64 src/main/docker/linux_x64/
-    - docker push registry.gitlab.com/dumonts/hunspell-java:build-linux_x64
+    - docker build -t registry.gitlab.com/dumonts/hunspell-java:build src/main/docker/
+    - docker push registry.gitlab.com/dumonts/hunspell-java:build
 
-.validate:
-  stage: build
-  script: "mvn validate"
+test-build:
+  stage: test
+  image: docker:stable
+  variables:
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+  services:
+    - docker:dind
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker pull registry.gitlab.com/dumonts/hunspell-java:build
+    - docker run registry.gitlab.com/dumonts/hunspell-java:build
 
 .verify:
   stage: test
   script: "mvn verify"
   except:
     - master
-
-validate:jdk8-alpine:
-  extends: .validate
-  image: maven:3-jdk-8-alpine
-  before_script:
-    - "apk add libc6-compat libstdc++"
-    - "export LD_LIBRARY_PATH=/lib64/"
-
-validate:jdk8:
-  extends: .validate
-  image: maven:3-jdk-8
-  
-validate:jdk11-slim:
-  extends: .validate
-  image: maven:3-jdk-11-slim
-
-validate:jdk11:
-  extends: .validate
-  image: maven:3-jdk-11
 
 verify:jdk8-alpine:
   extends: .verify
