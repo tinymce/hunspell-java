@@ -31,7 +31,7 @@ test-build:
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker pull registry.gitlab.com/dumonts/hunspell-java:build
-    - docker run registry.gitlab.com/dumonts/hunspell-java:build
+    - docker run -v ${PWD}:/hunspell-java registry.gitlab.com/dumonts/hunspell-java:build
 
 .verify:
   stage: test
