@@ -14,6 +14,14 @@
         <hunspell.version>1.7</hunspell.version>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>clojars</id>
+            <name>Clojars repository</name>
+            <url>https://clojars.org/repo</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.nativelibs4java</groupId>

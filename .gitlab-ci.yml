@@ -20,7 +20,7 @@ build-image:
     - docker build -t registry.gitlab.com/dumonts/hunspell-java:build src/main/docker/
     - docker push registry.gitlab.com/dumonts/hunspell-java:build
 
-test-build:
+test-build-image:
   stage: test
   image: docker:stable
   variables:
