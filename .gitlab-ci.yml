@@ -61,7 +61,7 @@ verify:jdk11:
 deploy:jdk8:
   stage: deploy
   script:
-    - 'mvn deploy'
+    - 'mvn --settings .mvn/settings.xml deploy'
   only:
     - master
   image: maven:3-jdk-8
