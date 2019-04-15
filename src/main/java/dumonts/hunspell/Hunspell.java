@@ -84,7 +84,7 @@ public class Hunspell implements Closeable {
         // Ask bridj for a `java.util.List` that wraps `nativeSuggestionArray`
         List<Pointer<Byte>> nativeSuggestionList = nativeSuggestionArray.get().validElements(suggestionCount).asList();
         // Convert C Strings to java strings
-        List<String> suggestions = nativeSuggestionList.stream().map(Pointer::getCString).collect(Collectors.toList());
+        List<String> suggestions = nativeSuggestionList.stream().map((p) -> p.getStringAtOffset(0, Pointer.StringType.C, charset)).collect(Collectors.toList());
 
         // We can free the underlying buffer now because Java's `String` owns it's own memory
         HunspellLibrary.Hunspell_free_list(handle, nativeSuggestionArray, suggestionCount);
