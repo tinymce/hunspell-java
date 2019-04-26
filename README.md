@@ -11,10 +11,9 @@ rebuild hunspell.
 
 
 ## Building libhunspell
-You can find a Dockerfile for building Hunspell for Windows and Linux under `src/main/docker/`.
-Build the image with `docker build -t build-hunspell src/main/docker/`
-Then run a container with the source code mounted `docker run -v ${PWD}:/hunspell-java build-hunspell`. This will create
-the shared libraries under `src/main/resources/org/bridj/lib/`.
+Building for Linux is easy, just follow the official Hunspell documentation. Building for Windows is tricky because we
+want to create a dll that statically links most dependencies. In general we want to create a static library with MXE and
+then create a dynamic library from these static sources, including statically build runtime dependencies.
 
 
 ## Releasing
