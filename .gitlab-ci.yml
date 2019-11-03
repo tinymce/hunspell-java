@@ -7,35 +7,25 @@ cache:
   paths:
     - .m2/repository
 
-.verify:
+.test:
   stage: test
-  script: "mvn verify"
-  except:
-    - master
+  script: "mvn test"
 
-verify:jdk8-alpine:
-  extends: .verify
+test:jdk8-alpine:
+  extends: .test
   image: maven:3-jdk-8-alpine
   before_script:
     - "apk add libc6-compat libstdc++"
     - "export LD_LIBRARY_PATH=/lib64/"
 
-verify:jdk8:
-  extends: .verify
+test:jdk8:
+  extends: .test
   image: maven:3-jdk-8
   
-verify:jdk11-slim:
-  extends: .verify
+test:jdk11-slim:
+  extends: .test
   image: maven:3-jdk-11-slim
 
-verify:jdk11:
-  extends: .verify
+test:jdk11:
+  extends: .test
   image: maven:3-jdk-11
-
-deploy:jdk8:
-  stage: deploy
-  script:
-    - 'mvn --settings .mvn/settings.xml deploy'
-  only:
-    - master
-  image: maven:3-jdk-8
