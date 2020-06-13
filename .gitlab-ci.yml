@@ -9,7 +9,7 @@ cache:
 
 .test:
   stage: test
-  script: "mvn test"
+  script: "mvn test -D bridj.debug=true"
 
 test:jdk8-alpine:
   extends: .test
