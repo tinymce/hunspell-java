@@ -29,3 +29,9 @@ test:jdk11-slim:
 test:jdk11:
   extends: .test
   image: maven:3-jdk-11
+
+test:centos7:
+  extends: .test
+  image: centos:7
+  before_script:
+    - "yum install -y maven"
