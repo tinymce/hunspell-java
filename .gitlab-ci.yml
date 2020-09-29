@@ -81,3 +81,12 @@ test:fedora32:
 test:fedora31:
   extends: .fedora
   image: fedora:31
+
+test:windows:
+  extends: .test
+  tags:
+    - windows
+  before_script:
+    - Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+    - choco install -y maven
+    - refreshenv
