@@ -1,3 +1,6 @@
+-runtime JNA
+-direct
+-skipDeprecated
 -library hunspell
 -package dumonts.hunspell.bindings
 -Isrc/main/cpp/hunspell/src/hunspell/

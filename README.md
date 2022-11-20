@@ -1,8 +1,6 @@
 # Hunspell for Java
 
-[![Build status](https://dev.azure.com/ole0358/hunspell-java/_apis/build/status/hunspell-java-Maven-CI)](https://dev.azure.com/ole0358/hunspell-java/_build/latest?definitionId=1)
-
-Provides Java bindings and wrappers for [Hunspell 1.7](https://github.com/hunspell/hunspell). We generate [bridj](https://github.com/nativelibs4java/BridJ)
+Provides Java bindings and wrappers for [Hunspell 1.7](https://github.com/hunspell/hunspell). We generate JNA
 bindings with [jnaerator](https://github.com/nativelibs4java/JNAerator) and wrap the automatically generated bindings. 
 
 
