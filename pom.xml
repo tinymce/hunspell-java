@@ -6,7 +6,7 @@
 
     <groupId>com.gitlab.dumonts</groupId>
     <artifactId>hunspell</artifactId>
-    <version>1.1.0</version>
+    <version>2.0.0-SNAPSHOT</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Java Bindings to Hunspell 1.7</description>
@@ -64,14 +64,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.nativelibs4java</groupId>
-            <artifactId>bridj</artifactId>
-            <version>0.7.0</version>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna-platform</artifactId>
+            <version>5.12.1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.10</version>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

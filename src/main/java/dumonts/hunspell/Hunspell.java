@@ -1,7 +1,8 @@
 package dumonts.hunspell;
 
+import com.sun.jna.Memory;
+import com.sun.jna.ptr.PointerByReference;
 import dumonts.hunspell.bindings.HunspellLibrary;
-import org.bridj.Pointer;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -10,22 +11,19 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Hunspell implements Closeable {
-    private final Pointer<HunspellLibrary.Hunhandle> handle;
+    private final PointerByReference handle;
+    private final String encoding;
     private final Charset charset;
 
     public Hunspell(Path dictionary, Path affix) {
-        Pointer<Byte> aff = Pointer.pointerToCString(affix.toString());
-        Pointer<Byte> dic = Pointer.pointerToCString(dictionary.toString());
-        handle = HunspellLibrary.Hunspell_create(aff, dic);
-        charset = Charset.forName(HunspellLibrary.Hunspell_get_dic_encoding(handle).getCString());
+        handle = HunspellLibrary.Hunspell_create(affix.toString(), dictionary.toString());
         if (this.handle == null) {
             throw new RuntimeException("Unable to create Hunspell instance");
         }
+        encoding = HunspellLibrary.Hunspell_get_dic_encoding(handle).getString(0);
+        charset = Charset.forName(encoding);
     }
 
     public static Hunspell forDictionaryInResources(String language, String resourcePath) {
@@ -54,41 +52,44 @@ public class Hunspell implements Closeable {
         if (handle == null) {
             throw new RuntimeException("Attempt to use hunspell instance after closing");
         }
-        @SuppressWarnings("unchecked")
-        Pointer<Byte> str = (Pointer<Byte>) Pointer.pointerToString(word, Pointer.StringType.C, charset);
-        int result = HunspellLibrary.Hunspell_spell(handle, str);
-        return result != 0;
+        final byte[] bytes = word.getBytes(charset);
+        try (Memory m = new Memory(bytes.length + 1)) {
+            m.write(0, bytes, 0, bytes.length);
+            m.setByte(bytes.length, (byte) 0);
+            int result = HunspellLibrary.Hunspell_spell(handle, m);
+            return result != 0;
+        }
     }
 
     public void add(String word) {
         if (handle == null) {
             throw new RuntimeException("Attempt to use hunspell instance after closing");
         }
-        @SuppressWarnings("unchecked")
-        Pointer<Byte> str = (Pointer<Byte>) Pointer.pointerToString(word, Pointer.StringType.C, charset);
-        HunspellLibrary.Hunspell_add(handle, str);
+        final byte[] bytes = word.getBytes(charset);
+        try (Memory m = new Memory(bytes.length + 1)) {
+            m.write(0, bytes, 0, bytes.length);
+            m.setByte(bytes.length, (byte) 0);
+            HunspellLibrary.Hunspell_add(handle, m);
+        }
     }
 
-    public List<String> suggest(String word) {
-        // Create pointer to native string
-        @SuppressWarnings("unchecked")
-        Pointer<Byte> str = (Pointer<Byte>) Pointer.pointerToString(word, Pointer.StringType.C, charset);
-        // Create pointer to native string array
-        Pointer<Pointer<Pointer<Byte>>> nativeSuggestionArray = Pointer.allocatePointerPointer(Byte.class);
-        // Hunspell will allocate the array and fill it with suggestions
-        int suggestionCount = HunspellLibrary.Hunspell_suggest(handle, nativeSuggestionArray, str);
-        if (suggestionCount == 0) {
-            // Return early and don't try to free the array
-            return new ArrayList<>();
+    public String[] suggest(String word) {
+        final PointerByReference ptr = new PointerByReference();
+        final byte[] bytes = word.getBytes(charset);
+        int suggestionCount;
+        String[] result;
+        try (final Memory m = new Memory(bytes.length + 1)) {
+            m.write(0, bytes, 0, bytes.length);
+            m.setByte(bytes.length, (byte) 0);
+            suggestionCount = HunspellLibrary.Hunspell_suggest(handle, ptr, m);
+            if (suggestionCount > 0) {
+                result = ptr.getValue().getStringArray(0, suggestionCount, encoding);
+                HunspellLibrary.Hunspell_free_list(handle, ptr, suggestionCount);
+            } else {
+                result = new String[]{};
+            }
         }
-        // Ask bridj for a `java.util.List` that wraps `nativeSuggestionArray`
-        List<Pointer<Byte>> nativeSuggestionList = nativeSuggestionArray.get().validElements(suggestionCount).asList();
-        // Convert C Strings to java strings
-        List<String> suggestions = nativeSuggestionList.stream().map((p) -> p.getStringAtOffset(0, Pointer.StringType.C, charset)).collect(Collectors.toList());
-
-        // We can free the underlying buffer now because Java's `String` owns it's own memory
-        HunspellLibrary.Hunspell_free_list(handle, nativeSuggestionArray, suggestionCount);
-        return suggestions;
+        return result;
     }
 
     public void close() {
