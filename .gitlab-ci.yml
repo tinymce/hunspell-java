@@ -11,76 +11,35 @@ cache:
   stage: test
   script: "mvn test"
 
-test:jdk8-alpine:
-  extends: .test
-  image: maven:3-jdk-8-alpine
-  before_script:
-    - "apk add libc6-compat libstdc++"
-    - "export LD_LIBRARY_PATH=/lib64/"
-
-test:jdk8:
-  extends: .test
-  image: maven:3-jdk-8
-
-test:jdk11-slim:
-  extends: .test
-  image: maven:3-jdk-11-slim
-
-test:jdk11:
-  extends: .test
-  image: maven:3-jdk-11
-
-.centos:
+test:rockylinux:
   extends: .test
   before_script:
+    - "yum update -y"
     - "yum install -y maven"
+  parallel:
+    matrix:
+      - VERSION: ["8", "9"]
+  image: rockylinux:$VERSION
 
-test:centos7:
-  extends: .centos
-  image: centos:7
-
-test:centos8:
-  extends: .centos
-  image: centos:8
-
-.ubuntu:
+test:ubuntu:
   extends: .test
   before_script:
-    - "apt update"
+    - "apt update -y"
     - "apt install -y default-jdk-headless maven"
+  parallel:
+    matrix:
+      - VERSION: ["16.04", "18.04", "20.04", "22.04"]
+  image: ubuntu:$VERSION
 
-test:ubuntu20:
-  extends: .ubuntu
-  image: ubuntu:20.04
-
-test:ubuntu19:
-  extends: .ubuntu
-  image: ubuntu:19.10
-
-test:ubuntu18:
-  extends: .ubuntu
-  image: ubuntu:18.04
-
-test:ubuntu16:
-  extends: .ubuntu
-  image: ubuntu:16.04
-
-.fedora:
+test:fedora:
   extends: .test
   before_script:
+    - "dnf update -y"
     - "dnf install -y maven"
-
-test:fedora33:
-  extends: .fedora
-  image: fedora:33
-
-test:fedora32:
-  extends: .fedora
-  image: fedora:32
-
-test:fedora31:
-  extends: .fedora
-  image: fedora:31
+  parallel:
+    matrix:
+      - VERSION: ["35", "36", "37"]
+  image: fedora:$VERSION
 
 test:windows:
   extends: .test
