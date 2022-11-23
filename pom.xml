@@ -82,14 +82,6 @@
                 <groupId>com.nativelibs4java</groupId>
                 <artifactId>maven-jnaerator-plugin</artifactId>
                 <version>0.12</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
