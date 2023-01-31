@@ -13,7 +13,7 @@ import com.sun.jna.ptr.PointerByReference;
  */
 public class HunspellLibrary implements Library {
 	public static final String JNA_LIBRARY_NAME = "hunspell";
-	public static final NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(HunspellLibrary.JNA_LIBRARY_NAME);
+	public static final NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(HunspellLibrary.JNA_LIBRARY_NAME, HunspellLibrary.class.getClassLoader());
 	static {
 		Native.register(HunspellLibrary.class, HunspellLibrary.JNA_NATIVE_LIB);
 	}
