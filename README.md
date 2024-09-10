@@ -19,7 +19,7 @@ cd src/main/cpp/hunspell
 autoreconf -vfi
 ./configure
 make
-cp src/hunspell/.libs/libhunspell-1.7.so ../../resources/org/bridj/lib/linux_x64/libhunspell.so
+cp src/hunspell/.libs/libhunspell-1.7.so ../../resources/linux-x86-64/libhunspell.so
 ```
 
 The last step copies the dynamic library to the appropriate resource folder (assuming you build on a 64 bit system).
