@@ -11,16 +11,6 @@ cache:
   stage: test
   script: "mvn test"
 
-test:rockylinux:
-  extends: .test
-  before_script:
-    - "yum update -y"
-    - "yum install -y maven"
-  parallel:
-    matrix:
-      - VERSION: ["8", "9"]
-  image: rockylinux:$VERSION
-
 test:ubuntu:
   extends: .test
   before_script:
@@ -28,7 +18,7 @@ test:ubuntu:
     - "apt install -y default-jdk-headless maven"
   parallel:
     matrix:
-      - VERSION: ["24.04"]
+      - VERSION: ["23.10", "24.04", "24.10"]
   image: ubuntu:$VERSION
 
 test:fedora:
@@ -38,7 +28,7 @@ test:fedora:
     - "dnf install -y maven"
   parallel:
     matrix:
-      - VERSION: ["39"]
+      - VERSION: ["39","40", "41", "42"]
   image: fedora:$VERSION
 
 test:windows:
