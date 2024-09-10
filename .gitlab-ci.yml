@@ -28,7 +28,7 @@ test:ubuntu:
     - "apt install -y default-jdk-headless maven"
   parallel:
     matrix:
-      - VERSION: ["16.04", "18.04", "20.04", "22.04"]
+      - VERSION: ["24.04"]
   image: ubuntu:$VERSION
 
 test:fedora:
@@ -38,7 +38,7 @@ test:fedora:
     - "dnf install -y maven"
   parallel:
     matrix:
-      - VERSION: ["35", "36", "37"]
+      - VERSION: ["39"]
   image: fedora:$VERSION
 
 test:windows:
