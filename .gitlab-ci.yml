@@ -34,7 +34,7 @@ test:fedora:
 test:windows:
   extends: .test
   tags:
-    - windows
+    - saas-windows-medium-amd64
   before_script:
     - Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
     - choco install -y maven
