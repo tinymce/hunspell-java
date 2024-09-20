@@ -4,40 +4,40 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.gitlab.dumonts</groupId>
+    <groupId>cloud.tiny</groupId>
     <artifactId>hunspell</artifactId>
     <version>2.2.0</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Java Bindings to Hunspell 1.7</description>
-    <url>https://gitlab.com/dumonts/hunspell-java</url>
+    <url>https://github.com/tinymce/hunspell-java</url>
 
     <licenses>
         <license>
             <name>Apache License 2.0</name>
-            <url>https://gitlab.com/dumonts/hunspell-java/blob/master/LICENSE</url>
+            <url>https://github.com/tinymce/hunspell-java/blob/master/LICENSE</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
 
     <organization>
-        <name>com.gitlab.dumonts</name>
-        <url>https://gitlab.com/dumonts</url>
+        <name>cloud.tiny</name>
+        <url>https://github.com/tinymce</url>
     </organization>
 
     <scm>
-        <url>https://gitlab.com/dumonts/hunspell-java</url>
+        <url>https://github.com/tinymce/hunspell-java</url>
         <connection>
-            scm:git:git://gitlab.com/dumonts/hunspell-java.git
+            scm:git:git://github.com/tinymce/hunspell-java.git
         </connection>
         <developerConnection>
-            scm:git:ssh://git@gitlab.com:dumonts/hunspell-java.git
+            scm:git:ssh://git@github.com:tinymce/hunspell-java.git
         </developerConnection>
     </scm>
 
     <issueManagement>
-        <system>GitLab</system>
-        <url>https://github.com/dumonts/hunspell-java/issues</url>
+        <system>Github</system>
+        <url>https://github.com/tinymce/hunspell-java/issues</url>
     </issueManagement>
 
     <developers>
@@ -46,6 +46,12 @@
             <email>ole.schoenburg@gmail.com</email>
             <organization>Dumonts</organization>
             <organizationUrl>https://gitlab.com/dumonts</organizationUrl>
+        </developer>
+        <developer>
+            <name>Federico Rossi</name>
+            <email>federico.rossi@tiny.cloud</email>
+            <organization>Tiny</organization>
+            <organizationUrl>https://tiny.cloud</organizationUrl>
         </developer>
     </developers>
 

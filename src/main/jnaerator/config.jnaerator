@@ -2,6 +2,6 @@
 -direct
 -skipDeprecated
 -library hunspell
--package dumonts.hunspell.bindings
+-package cloud.tiny.hunspell.bindings
 -Isrc/main/cpp/hunspell/src/hunspell/
 src/main/cpp/hunspell/src/hunspell/hunspell.h
