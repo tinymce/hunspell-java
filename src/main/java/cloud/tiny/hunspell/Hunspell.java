@@ -1,8 +1,8 @@
-package dumonts.hunspell;
+package cloud.tiny.hunspell;
 
 import com.sun.jna.Memory;
 import com.sun.jna.ptr.PointerByReference;
-import dumonts.hunspell.bindings.HunspellLibrary;
+import cloud.tiny.hunspell.bindings.HunspellLibrary;
 
 import java.io.Closeable;
 import java.io.IOException;

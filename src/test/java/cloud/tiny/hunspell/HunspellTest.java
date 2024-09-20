@@ -1,4 +1,4 @@
-package dumonts.hunspell;
+package cloud.tiny.hunspell;
 
 
 import org.junit.Test;
