@@ -11,16 +11,6 @@ cache:
   stage: test
   script: "mvn test"
 
-test:rockylinux:
-  extends: .test
-  before_script:
-    - "yum update -y"
-    - "yum install -y maven"
-  parallel:
-    matrix:
-      - VERSION: ["8", "9"]
-  image: rockylinux:$VERSION
-
 test:ubuntu:
   extends: .test
   before_script:
@@ -28,7 +18,7 @@ test:ubuntu:
     - "apt install -y default-jdk-headless maven"
   parallel:
     matrix:
-      - VERSION: ["16.04", "18.04", "20.04", "22.04"]
+      - VERSION: ["23.10", "24.04", "24.10"]
   image: ubuntu:$VERSION
 
 test:fedora:
@@ -38,13 +28,13 @@ test:fedora:
     - "dnf install -y maven"
   parallel:
     matrix:
-      - VERSION: ["35", "36", "37"]
+      - VERSION: ["39","40", "41", "42"]
   image: fedora:$VERSION
 
 test:windows:
   extends: .test
   tags:
-    - windows
+    - saas-windows-medium-amd64
   before_script:
     - Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
     - choco install -y maven

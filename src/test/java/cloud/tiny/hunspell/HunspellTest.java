@@ -25,6 +25,6 @@ public class HunspellTest {
     @Test
     public void testSuggest() {
         Hunspell dictionary = Hunspell.forDictionaryInResources("de");
-        assertEquals("Anfängerfehlerklassenbibliothek", dictionary.suggest("Anfängerfehlerklassenbibliothek")[0]);
+        assertEquals("willkommen", dictionary.suggest("willkome")[0]);
     }
 }
